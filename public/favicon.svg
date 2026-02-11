@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+  <!-- Claude Code mascot — pixel-art creature with body + legs -->
+  <!-- Background -->
+  <rect width="16" height="16" fill="#2b2b29" rx="2"/>
+
+  <!-- Ears -->
+  <rect x="3" y="1" width="2" height="2" fill="#c4795e"/>
+  <rect x="11" y="1" width="2" height="2" fill="#c4795e"/>
+
+  <!-- Head -->
+  <rect x="3" y="3" width="10" height="4" fill="#c4795e"/>
+
+  <!-- Eyes -->
+  <rect x="5" y="4" width="2" height="2" fill="#1a1915"/>
+  <rect x="9" y="4" width="2" height="2" fill="#1a1915"/>
+
+  <!-- Nose / snout -->
+  <rect x="6" y="6" width="4" height="1" fill="#a8634c"/>
+
+  <!-- Body -->
+  <rect x="3" y="7" width="10" height="5" fill="#c4795e"/>
+
+  <!-- Legs -->
+  <rect x="3" y="12" width="2" height="3" fill="#c4795e"/>
+  <rect x="6" y="12" width="2" height="3" fill="#c4795e"/>
+  <rect x="8" y="12" width="2" height="3" fill="#c4795e"/>
+  <rect x="11" y="12" width="2" height="3" fill="#c4795e"/>
+</svg>
