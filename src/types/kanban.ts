@@ -96,7 +96,10 @@ export type WSMessageType =
   | 'column_created'
   | 'column_updated'
   | 'column_deleted'
-  | 'columns_reordered';
+  | 'columns_reordered'
+  | 'label_created'
+  | 'label_updated'
+  | 'label_deleted';
 
 export interface WSMessage {
   type: WSMessageType;

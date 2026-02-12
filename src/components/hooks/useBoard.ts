@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
-import { Board, Task, Column, Attachment, CreateTaskInput, UpdateTaskInput, WSMessage, Label } from '@/types/kanban';
+import { Board, Task, Column, Attachment, CreateTaskInput, UpdateTaskInput, WSMessage, Label, WSMessageType } from '@/types/kanban';
 
 const API = '/api';
 
@@ -107,6 +107,35 @@ export function useBoard() {
       case 'columns_reordered': {
         const { columns } = msg.payload as { columns: Column[] };
         setBoard(prev => prev ? { ...prev, columns } : prev);
+        break;
+      }
+      case 'label_created': {
+        const { label } = msg.payload as { label: Label };
+        setBoard(prev => {
+          if (!prev) return prev;
+          if (prev.labels.some(l => l.id === label.id)) return prev;
+          return { ...prev, labels: [...prev.labels, label] };
+        });
+        break;
+      }
+      case 'label_updated': {
+        const { label } = msg.payload as { label: Label };
+        setBoard(prev => prev ? {
+          ...prev,
+          labels: prev.labels.map(l => l.id === label.id ? label : l),
+        } : prev);
+        break;
+      }
+      case 'label_deleted': {
+        const { labelId } = msg.payload as { labelId: string };
+        setBoard(prev => prev ? {
+          ...prev,
+          labels: prev.labels.filter(l => l.id !== labelId),
+          tasks: prev.tasks.map(t => ({
+            ...t,
+            labels: t.labels.filter(l => l !== labelId),
+          })),
+        } : prev);
         break;
       }
     }

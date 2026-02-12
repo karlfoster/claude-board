@@ -294,6 +294,16 @@ export async function createLabel(name: string, color: string): Promise<Label> {
   return label;
 }
 
+export async function updateLabel(labelId: string, name: string, color: string): Promise<Label> {
+  const board = g.__kanban_board!;
+  const label = board.labels.find(l => l.id === labelId);
+  if (!label) throw new Error(`Label not found: ${labelId}`);
+  label.name = name;
+  label.color = color;
+  await persistBoard();
+  return label;
+}
+
 export async function deleteLabel(labelId: string): Promise<string> {
   const board = g.__kanban_board!;
   const index = board.labels.findIndex(l => l.id === labelId);

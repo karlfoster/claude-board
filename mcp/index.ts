@@ -127,6 +127,20 @@ const tools: Tool[] = [
     },
   },
   {
+    name: 'kanban_manage_labels',
+    description: 'Create, update, delete, or list labels on the board',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        action: { type: 'string', enum: ['create', 'update', 'delete', 'list'], description: 'Action to perform' },
+        labelId: { type: 'string', description: 'Label ID (for update, delete)' },
+        name: { type: 'string', description: 'Label name (for create, update)' },
+        color: { type: 'string', description: 'Label hex color e.g. #3b82f6 (for create, update)' },
+      },
+      required: ['action'],
+    },
+  },
+  {
     name: 'kanban_manage_columns',
     description: 'Create, rename, reorder, or delete columns on the board',
     inputSchema: {
@@ -219,6 +233,36 @@ async function handleTool(name: string, args: Record<string, unknown>): Promise<
     case 'kanban_delete_task': {
       await apiRequest(`/api/tasks/${args.taskId}`, { method: 'DELETE' });
       return JSON.stringify({ success: true, message: `Task ${args.taskId} deleted` });
+    }
+
+    case 'kanban_manage_labels': {
+      const action = args.action as string;
+      switch (action) {
+        case 'create': {
+          const label = await apiRequest('/api/labels', {
+            method: 'POST',
+            body: JSON.stringify({ name: args.name, color: args.color }),
+          });
+          return JSON.stringify(label, null, 2);
+        }
+        case 'update': {
+          const label = await apiRequest(`/api/labels/${args.labelId}`, {
+            method: 'PUT',
+            body: JSON.stringify({ name: args.name, color: args.color }),
+          });
+          return JSON.stringify(label, null, 2);
+        }
+        case 'delete': {
+          await apiRequest(`/api/labels/${args.labelId}`, { method: 'DELETE' });
+          return JSON.stringify({ success: true, message: `Label ${args.labelId} deleted` });
+        }
+        case 'list': {
+          const board = await apiRequest('/api/board') as { labels: unknown[] };
+          return JSON.stringify(board.labels, null, 2);
+        }
+        default:
+          throw new Error(`Unknown label action: ${action}`);
+      }
     }
 
     case 'kanban_manage_columns': {
